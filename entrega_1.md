@@ -19,6 +19,10 @@ el tiempo de lavado o la "distancia" entre ciudades. Por esto me alejé de esta 
 ## Primeras ideas
 
 Como primera idea, pensé en tomar la primera prenda que vemos al iterar y asociarle la mayor cantidad
-de prendas compatibles que podamos. luego asociar todo ese conjunto a un lavado y quitarlas
-del total de prendas, luego repetir el razonamiento con el resto de las prendas que encontramos hasta que (con optimismo) no queden mas prendas.
+de prendas compatibles que podamos, ignorando el tiempo que lleva cada prenda en lavar. luego asociar todo ese conjunto a un lavado y quitarlas
+del total de prendas, luego repetir el razonamiento con el resto de las prendas que encontramos hasta que (con suerte) no queden mas prendas.
 Luego repetir todo este razonamiento de nuevo pero viendo si empezando con distintas prendas logramos mejores resultados.
+
+Tal vez es mejor elegir la prenda con mas compatibilidades posibles en lugar de simplemente la primera
+y repetir ese razonamiento, usando siempre la prenda que tenga el mayor numero de prendas compatibles
+en cada instancia. Con esta heurística, estaria usando un algoritmo *'greedy'*.
