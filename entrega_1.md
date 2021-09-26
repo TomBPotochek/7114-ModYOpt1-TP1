@@ -26,3 +26,12 @@ Luego repetir todo este razonamiento de nuevo pero viendo si empezando con disti
 Tal vez es mejor elegir la prenda con mas compatibilidades posibles en lugar de simplemente la primera
 y repetir ese razonamiento, usando siempre la prenda que tenga el mayor numero de prendas compatibles
 en cada instancia. Con esta heurística, estaria usando un algoritmo *'greedy'*.
+
+## Cambios
+
+El primer intento devuelve lavados con prendas que son incompatibles, y ahora veo que es porque estoy
+haciendo mal el razonamiento que hice para calcular prendas que son compatibles. tengo que ver de obtener grupos de prendas compatibles entre si. Yo obtenia una lista de prendas compatibles con
+una prenda dada, pero erroneamente esta asumiendo que ademas todas esas prendas eran compatibles entre sí (sin darme cuenta).
+
+siguiendo la idea anterior, voy a tomar la prenda con mas prendas compatibles e ir tratando de armar un lavado, asegurandome que cada prenda que agrego es compatible con las otras.
+
