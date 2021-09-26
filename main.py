@@ -1,4 +1,6 @@
 from collections import defaultdict
+from os import getuid
+from typing import Tuple, Set, Dict
 
 def split_line(line: str):
     return line[2::].strip().split(' ')
@@ -34,24 +36,70 @@ def parse_prendas(path: str):
                 loop = False
     return incompatibilidades, lavados, total_prendas
 
-def generar_lavados(total_prendas: set,
-                         compatibilidades: defaultdict):
+#le asigna un puntaje al conjunto de prendas que forma un lavado
+#en base a la cantidad de prendas que tiene
+#(tal vez sirva en el futuro para agregar el tiempo de lavado)
+def calcular_puntaje(lavado: Set):
+    return len(lavado)
+
+def mejorar_lavado(lavado: Set, grupo_compatibles: Set,
+                compatibilidades: defaultdict,
+                     incompatibilidades: defaultdict):
     
-    if not compatibilidades: #vacia
-        return tuple()
+    puntaje = calcular_puntaje(lavado)
 
-    prenda, lavado = max(compatibilidades.items(),
-                         key=lambda x:len(x[1]))
-    del compatibilidades[prenda]
+    mas_restrictiva = sorted(lavado,
+                         key=lambda x: len(incompatibilidades[x]),
+                          reverse=True)
 
-    for p in list(compatibilidades.keys()):
+    for prenda in mas_restrictiva:
+        nuevo_lavado = lavado - {prenda}
+
+        for p in grupo_compatibles:
+            if p != prenda and (p not in lavado):
+                if (lavado & incompatibilidades[p]) == set():
+                    lavado.add(p)
+        if calcular_puntaje(nuevo_lavado) > puntaje:
+            return mejorar_lavado(nuevo_lavado, grupo_compatibles,
+                                    compatibilidades, incompatibilidades)
+        
+    return lavado
+        
+
+
+
+def generar_lavados(compatibilidades: defaultdict,
+                     incompatibilidades: defaultdict):
+
+    #caso base
+    vacio = True
+    for p in compatibilidades:
+        if compatibilidades[p] != set(): #vacio
+            vacio = False
+            break #para ahorrar algunos ciclos
+    if vacio:
+        return tuple() #retornar tupla vacia
+
+    prenda, grupo_compatibles = max(compatibilidades.items(),
+                                    key=lambda x:len(x[1]))
+    lavado = set()
+
+    for p in grupo_compatibles:
+        # si no es incompatible con ninguna del lavado, la agrego
+        if (lavado & incompatibilidades[p]) == set():
+            lavado.add(p)
+    lavado = mejorar_lavado(lavado, grupo_compatibles,
+                            compatibilidades, incompatibilidades)
+    
+    #quito las prendas de este lavado del resto de las prendas
+    for p in compatibilidades:
         compatibilidades[p] -= lavado
-        if compatibilidades[p] == set():
-            del compatibilidades[p]
+    # for p in incompatibilidades:
+    #     incompatibilidades[p] -= lavado
+    return lavado, *generar_lavados(compatibilidades, incompatibilidades)
     
-    return lavado, *generar_lavados(tot_prendas, compatibilidades)
 
-from typing import Tuple, Set, Dict
+
 def format_answer(lavados: Tuple[Set], path_arhivo_solucion: str):
     with open(path_arhivo_solucion, "wt") as archivo:
         for num_lavado, lavado in enumerate(lavados):
@@ -75,7 +123,7 @@ if __name__ == '__main__':
     compat = {}
     for prenda in tot_prendas:
         compat[prenda] = tot_prendas - incompat[prenda]
-    lavados = generar_lavados(tot_prendas, compat)
+    lavados = generar_lavados(compat, incompat)
 
     print(calcular_tiempo_total(lavados, tiempos_lavado))
 

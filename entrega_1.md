@@ -35,3 +35,12 @@ una prenda dada, pero erroneamente esta asumiendo que ademas todas esas prendas 
 
 siguiendo la idea anterior, voy a tomar la prenda con mas prendas compatibles e ir tratando de armar un lavado, asegurandome que cada prenda que agrego es compatible con las otras.
 
+Logré armar un algoritmo recursivo que primero arma un posible lavado con la prenda que 
+mas prendas compatibles tiene y luego intenta mejorarla quitandole una prenda del lavado 
+con mas prendas incompatibles y viendo si quitar esa prenda permite agregar mas prendas
+de las que se podrian tener en el lavado manteniendo esa prenda. Esto lo hace recursivamente hasta que no se puede mejorar ese lavado.
+
+Luego, tambien en forma recursiva, se devuelve ese lavado junto con otro mejor lavado
+usando las prendas restantes.
+
+con esto obtuve un tiempo total de lavado de 66.
