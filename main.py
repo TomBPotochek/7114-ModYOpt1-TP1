@@ -37,10 +37,17 @@ def parse_prendas(path: str):
     return incompatibilidades, lavados, total_prendas
 
 #le asigna un puntaje al conjunto de prendas que forma un lavado
-#en base a la cantidad de prendas que tiene
-#(tal vez sirva en el futuro para agregar el tiempo de lavado)
+#en base a la cantidad de prendas que tiene y el tiempo de la mas grande
 def calcular_puntaje(lavado: Set):
-    return len(lavado)
+    global tiempos_lavado
+    tiempos_de_prendas = [tiempos_lavado[p] for p in lavado]
+    if tiempos_de_prendas == []:
+        return 0
+    else:
+        t_max = max([tiempos_lavado[p] for p in lavado])
+        
+        #aumenta con el num de prendas pero baja con el tiempo de la peor
+        return len(lavado)/t_max 
 
 def mejorar_lavado(lavado: Set, grupo_compatibles: Set,
                 compatibilidades: defaultdict,
@@ -56,9 +63,9 @@ def mejorar_lavado(lavado: Set, grupo_compatibles: Set,
         nuevo_lavado = lavado - {prenda}
 
         for p in grupo_compatibles:
-            if p != prenda and (p not in lavado):
-                if (lavado & incompatibilidades[p]) == set():
-                    lavado.add(p)
+            if (p not in lavado):
+                if (nuevo_lavado & incompatibilidades[p]) == set():
+                    nuevo_lavado.add(p)
         if calcular_puntaje(nuevo_lavado) > puntaje:
             return mejorar_lavado(nuevo_lavado, grupo_compatibles,
                                     compatibilidades, incompatibilidades)

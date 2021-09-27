@@ -44,3 +44,7 @@ Luego, tambien en forma recursiva, se devuelve ese lavado junto con otro mejor l
 usando las prendas restantes.
 
 con esto obtuve un tiempo total de lavado de 66.
+
+Tambien cambie la función `calcular_puntaje` para que tambien tenga en cuenta el tiempo
+que lleva ese lavado en hacerse, pero el resultado final no cambió. La formula es el cociente
+entre el numero de prendas en ese lavado y el tiempo que lleva en hacerse ese lavado.
