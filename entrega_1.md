@@ -29,13 +29,14 @@ en cada instancia. Con esta heurística, estaria usando un algoritmo *'greedy'*.
 
 ## Cambios
 
-El primer intento devuelve lavados con prendas que son incompatibles, y ahora veo que es porque estoy
-haciendo mal el razonamiento que hice para calcular prendas que son compatibles. tengo que ver de obtener grupos de prendas compatibles entre si. Yo obtenia una lista de prendas compatibles con
-una prenda dada, pero erroneamente esta asumiendo que ademas todas esas prendas eran compatibles entre sí (sin darme cuenta).
+El primer intento devuelve lavados con prendas que son incompatibles, y luego me 
+dí cuenta que es porque hice mal el razonamiento que hice para calcular prendas que son
+ compatibles. Para solucionarlo, tenía que ver de obtener grupos de prendas compatibles entre si. Yo estaba obteniendo una lista de prendas compatibles con
+una prenda dada, pero erroneamente asumía que ademas todas esas prendas eran compatibles entre sí (sin darme cuenta).
 
-siguiendo la idea anterior, voy a tomar la prenda con mas prendas compatibles e ir tratando de armar un lavado, asegurandome que cada prenda que agrego es compatible con las otras.
+siguiendo la idea anterior, luego pensé en tomar la prenda con mas prendas compatibles e ir tratando de armar un lavado, asegurandome que cada prenda que agrego es compatible con las otras.
 
-Logré armar un algoritmo recursivo que primero arma un posible lavado con la prenda que 
+Con eso logré armar un algoritmo recursivo que primero arma un posible lavado con la prenda que 
 mas prendas compatibles tiene y luego intenta mejorarla quitandole una prenda del lavado 
 con mas prendas incompatibles y viendo si quitar esa prenda permite agregar mas prendas
 de las que se podrian tener en el lavado manteniendo esa prenda. Esto lo hace recursivamente hasta que no se puede mejorar ese lavado.
@@ -43,8 +44,20 @@ de las que se podrian tener en el lavado manteniendo esa prenda. Esto lo hace re
 Luego, tambien en forma recursiva, se devuelve ese lavado junto con otro mejor lavado
 usando las prendas restantes.
 
-con esto obtuve un tiempo total de lavado de 66.
+Así obtuve un tiempo total de lavado de 66.
 
-Tambien cambie la función `calcular_puntaje` para que tambien tenga en cuenta el tiempo
+Tambien cambie la función `calcular_puntaje` para que tenga en cuenta el tiempo
 que lleva ese lavado en hacerse, pero el resultado final no cambió. La formula es el cociente
 entre el numero de prendas en ese lavado y el tiempo que lleva en hacerse ese lavado.
+
+## Comentarios Finales
+
+El puntaje obtenido de 66 no es óptimo ya que en el ranking hay puntajes mejores de hasta 61.
+Por lo tanto este algoritmo tampoco puede ser óptimo. El algoritmo consta de hacer pequeños cambios
+en la combinacion de prendas en un lavado y eligir una solución localmente óptima, y no tengo
+ninguna justificación para deducir que este algoritmo (*'greedy'*) eligiendo la mejor opción local va 
+llegar a la solución óptima general.
+
+Por su puesto que un algoritmo que prueba todas las combinaciones posibles puede llegar
+a la solución óptima, pero ni siquiera quería pensar en el número total de posibilidades que
+mi algoritmo debería probar...
