@@ -78,7 +78,7 @@ def coloreo(grafo: Incompatibilidades):
             else:
                 colores_adyacentes = set()
                 col_max = no_color
-                
+
             if col_max == no_color:
                 col_max = 1
             rango_colores = {c for c in range(1, col_max+2)}
@@ -101,11 +101,19 @@ def format_answer(lavados: Dict[color, Set], path_arhivo_solucion: str):
                 archivo.write(f"{prenda} {color}\n")
 
 def calcular_tiempo_total(lavados: Dict[color, Set],
-                 tiempo_por_prenda: Dict[int, int]):
+                grafo: Incompatibilidades):
     tiempo_total = 0
+    tot_prendas = set()
     for lavado in lavados:
-        prenda_mas_larga = max(lavados[lavado], key=lambda x:tiempo_por_prenda[x])
-        tiempo_total += tiempo_por_prenda[prenda_mas_larga]
+        for p in lavados[lavado]:
+            if (lavados[lavado] & grafo.adyacencias[p]) != set():
+                raise Exception(f"lavado = {lavado} no respeta incompatibilidades")
+
+        prenda_mas_larga = max(lavados[lavado], key=lambda x:grafo.tiempos[x])
+        tiempo_total += grafo.tiempos[prenda_mas_larga]
+        tot_prendas |= lavados[lavado]
+    if tot_prendas != grafo.lista:
+        raise Exception("Los lavados no lavan toda la ropa")
     return tiempo_total
 
 
@@ -134,7 +142,7 @@ if __name__ == '__main__':
 
     grafo = parse_prendas("segundo_problema.txt")
     lavados = coloreo(grafo)
-    print(calcular_tiempo_total(lavados, grafo.tiempos))
+    print(calcular_tiempo_total(lavados, grafo))
     format_answer(lavados, args.archivo)
 
 
