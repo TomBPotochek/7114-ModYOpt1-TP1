@@ -25,6 +25,9 @@ def parse_prendas(path: str):
                 a,b = split_line(linea)
                 a,b = int(a), int(b)
                 incompatibilidades[a].add(b)
+    # modifico las incompatibilidades para que sean simetricas
+    # o sea, si a es incompatible con b, hacer que b sea incompatible con a
+                incompatibilidades[b].add(a)
             elif tipo == 'n':
                 a,b = split_line(linea)
                 a,b = int(a), int(b)
@@ -125,7 +128,7 @@ def calcular_tiempo_total(lavados: Tuple[Set],
 
 
 if __name__ == '__main__':
-    incompat, tiempos_lavado, tot_prendas = parse_prendas("primer_problema.txt")
+    incompat, tiempos_lavado, tot_prendas = parse_prendas("segundo_problema.txt")
 
     compat = {}
     for prenda in tot_prendas:
@@ -134,4 +137,4 @@ if __name__ == '__main__':
 
     print(calcular_tiempo_total(lavados, tiempos_lavado))
 
-    format_answer(lavados, "solucion.txt")
+    format_answer(lavados, "solucion2.txt")
