@@ -58,3 +58,13 @@ Tambien implementé que se recorra los vertices en un órden al azar cada vez qu
 per ademas si uno quiere repetir una corrida exactamente, el programa reporta la semilla usada para 
 el módulo `random` y se lo puede pasar por parametro al programa con el flag `--seed $N` donde `$N` 
 lo uso para indicar la semilla a usar.
+
+### Posibles mejoras
+
+El algoritmo en sí no tiene en cuenta los distintos pesos (tiempos de lavado) asociados a cada 
+vértice. Como el algoritmo es sensible a el órden en que se recorre el grafo y se lo colorea, 
+obtener mejores resultados se esta haciendo solamente variando ese órden.  
+Una posible mejora seria entonces mirar a qué color se esta por asignar a un vértice y ver cuál 
+es el peso máximo actual asociado a ese color. Si el peso es similar, usar ese color. Si es muy 
+distinto, usar otro color, al costo de terminar creando un lavado nuevo.  
+Otra posibilidad es probar con distintos seed por fuerza bruta. 

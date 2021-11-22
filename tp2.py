@@ -116,6 +116,31 @@ def calcular_tiempo_total(lavados: Dict[color, Set],
         raise Exception("Los lavados no lavan toda la ropa")
     return tiempo_total
 
+def setear_seed(seed=None):
+    if seed is None:
+        from sys import maxsize
+        seed = random.randrange(maxsize)
+    random.seed(seed)
+    return seed
+
+def fuerza_bruta(grafo: Incompatibilidades):
+    mejor_tiempo = 99999
+    mejor_seed = 0
+    mejor_lavado = None
+    try:
+        while True:
+            seed = setear_seed()
+            lavados = coloreo(grafo)
+            tiempo_actual = calcular_tiempo_total(lavados, grafo)
+            if tiempo_actual < mejor_tiempo:
+                mejor_tiempo = tiempo_actual
+                mejor_seed = seed
+                mejor_tanda = lavados
+    except KeyboardInterrupt:
+        print(f"mejor seed = {seed}")
+        print(f"puntaje = {mejor_tiempo}")
+        format_answer(mejor_tanda, "fuerza_bruta.txt")
+        
 
 
 if __name__ == '__main__':
@@ -130,13 +155,7 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.seed is not None:
-        seed = args.seed
-    else:
-        from sys import maxsize
-        seed = random.randrange(maxsize)
-        print(f"seed = {seed}")
-    random.seed(seed)
+    print(f"seed = {setear_seed(args.seed)}")
 
 
 
