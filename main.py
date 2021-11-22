@@ -62,16 +62,30 @@ def mejorar_lavado(lavado: Set, grupo_compatibles: Set,
                          key=lambda x: len(incompatibilidades[x]),
                           reverse=True)
 
+    grupo_compatibles = grupo_compatibles.copy()
+
     for prenda in mas_restrictiva:
         nuevo_lavado = lavado - {prenda}
+        grupo_compatibles.add(prenda)
 
-        for p in grupo_compatibles:
-            if (p not in lavado):
-                if (nuevo_lavado & incompatibilidades[p]) == set():
-                    nuevo_lavado.add(p)
+        p_mejor = max(grupo_compatibles,
+                                    key=lambda x:len(compatibilidades[x]))
+
+        if p_mejor not in lavado:
+            if (nuevo_lavado & incompatibilidades[p_mejor]) == set():
+                nuevo_lavado.add(p_mejor)
+                grupo_compatibles.remove(p_mejor)
         if calcular_puntaje(nuevo_lavado) > puntaje:
             return mejorar_lavado(nuevo_lavado, grupo_compatibles,
                                     compatibilidades, incompatibilidades)
+
+        # for p in grupo_compatibles:
+        #     if (p not in lavado):
+        #         if (nuevo_lavado & incompatibilidades[p]) == set():
+        #             nuevo_lavado.add(p)
+        # if calcular_puntaje(nuevo_lavado) > puntaje:
+        #     return mejorar_lavado(nuevo_lavado, grupo_compatibles,
+        #                             compatibilidades, incompatibilidades)
         
     return lavado
         

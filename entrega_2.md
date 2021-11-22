@@ -37,4 +37,13 @@ Resulta que hay mucha literatura sobre este problema, la mayor parte refiriendos
 modelos de programación lineal y otra parte a algoritmos para aproximar una solución optima, 
 pero casi todos esos algoritmos son muy complicados y dificiles de enteder (e implementar).
 
+## Intentos mejora al algoritmo del tp1
+
+Una cosa que quería intentar era cambiar la manera en la que el algoritmo 
+elije una prenda para mejorar el puntaje de un lavado dado. Para eso cambié 
+que se elija una prenda para intercambiar en base a cuál (de entre las compatibles) tiene 
+en sí la mayor cantidad de prendas compatibles. Luego se removería esta prenda de la variable 
+que lleva cuenta de estas para no volver a elejirla.  
+Esto resulto futíl ya que la solución final empeoró a 801.
+
 
