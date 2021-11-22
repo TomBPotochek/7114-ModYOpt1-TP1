@@ -46,4 +46,15 @@ en sí la mayor cantidad de prendas compatibles. Luego se removería esta prenda
 que lleva cuenta de estas para no volver a elejirla.  
 Esto resulto futíl ya que la solución final empeoró a 801.
 
+## Nuevo método
 
+Ahora probé plantiar el algoritmo como uno que trabaja con grafos y usa una heurística simple 
+para elejir un color a cada vértice.  
+Básicamente, el grafo es una lista de adyacencias donde cada adyacencia representa la incompatibilidad entre 
+ese par de prendas. El algoritmo v1 itera por cada vertice y le asigna un color que no lo tenga ninguno 
+de los vertices adyacentes.
+
+Tambien implementé que se recorra los vertices en un órden al azar cada vez que se ejecuta el programa, 
+per ademas si uno quiere repetir una corrida exactamente, el programa reporta la semilla usada para 
+el módulo `random` y se lo puede pasar por parametro al programa con el flag `--seed $N` donde `$N` 
+lo uso para indicar la semilla a usar.
